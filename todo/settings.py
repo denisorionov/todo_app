@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+
+import django_heroku
 from environs import Env
 
 env = Env()
@@ -144,3 +146,4 @@ TEMPUS_DOMINUS_INCLUDE_ASSETS = True
 
 DATETIME_FORMAT = '%d.%m.%Y'
 DATE_INPUT_FORMATS = '%d.%m.%Y'
+django_heroku.settings(locals())
