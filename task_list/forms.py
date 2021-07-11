@@ -1,6 +1,6 @@
 from django import forms
-from tempus_dominus.widgets import DatePicker
-from taggit.forms import TagField, TagWidget
+from taggit.forms import TagWidget
+
 from task_list.models import Task
 
 STATUS_CHOICES = [
@@ -18,7 +18,8 @@ class TaskForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control col-6', 'name': 'title'}),
             'description': forms.Textarea(attrs={'class': 'form-control col-6', 'name': 'description', 'rows': '3'}),
             'status': forms.Select(attrs={'class': 'form-control col-3', 'name': 'status'}, choices=STATUS_CHOICES),
-            'due_date': forms.DateInput(attrs={'class': 'form-control  col-3', 'id': 'myDate', 'type': 'date', 'name': 'myDate'}),
+            'due_date': forms.DateInput(
+                attrs={'class': 'form-control  col-3', 'id': 'myDate', 'type': 'date', 'name': 'myDate'}),
             'tags': TagWidget(attrs={'class': 'form-control col-6'}),
 
         }
