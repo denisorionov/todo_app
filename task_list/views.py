@@ -2,6 +2,7 @@ import csv
 import io
 from datetime import datetime
 
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -38,6 +39,13 @@ class MainView(View):
             )
 
         return redirect('/')
+
+
+class SearchView(View):
+    def get(self, request, *args, **kwargs):
+        search = request.GET.get('search', '')
+        tasks = Task.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
+        return render(request, 'task_list/index.html', context={'tasks': tasks})
 
 
 class CurrentTasksView(View):

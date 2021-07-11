@@ -5,11 +5,12 @@ from django.urls import path
 
 from task_list.utils import export_csv
 from task_list.views import MainView, TaskApi, TaskView, CompletedTasksView, NewTaskView, CurrentTasksView, \
-    TaskDetailApi
+    TaskDetailApi, SearchView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MainView.as_view(), name='main_view'),
+    path('search/', SearchView.as_view(), name='search'),
     path('tag_filter/<str:tag_filter>/', MainView.as_view(), name='main_view_by_tag'),
     path('api/', TaskApi.as_view()),
     path('api_detail/<int:id>/', TaskDetailApi.as_view()),
