@@ -5,3 +5,4 @@ djangorestframework==3.12.4
 environs~=9.3.2
 gunicorn==20.1.0
 whitenoise==5.2.0
+django-heroku==0.3.1
