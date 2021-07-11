@@ -3,3 +3,4 @@ django-simple-history==3.0.0
 django-taggit==1.5.1
 djangorestframework==3.12.4
 environs~=9.3.2
+gunicorn==20.1.0
