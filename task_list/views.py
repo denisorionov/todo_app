@@ -26,17 +26,22 @@ class MainView(View):
         return render(request, 'task_list/index.html', context={"tasks": tasks, "main": True})
 
     def post(self, request):
-        csv_file = request.FILES['csv_file']
-        data_set = csv_file.read().decode('UTF-8')
-        io_string = io.StringIO(data_set)
-        next(io_string)
-        for row in csv.reader(io_string, delimiter=';', quotechar='"'):
-            Task.objects.get_or_create(
-                title=row[1],
-                description=row[2],
-                due_date=datetime.strptime(row[3], '%d.%m.%Y'),
-                status=row[4]
-            )
+        csv_file = request.FILES.get('csv_file', False)
+        if csv_file:
+            data_set = csv_file.read().decode('UTF-8')
+            io_string = io.StringIO(data_set)
+            next(io_string)
+            for row in csv.reader(io_string, delimiter=';', quotechar='"'):
+                try:
+                    datetime.strptime(row[2], '%d.%m.%Y')
+                except ValueError:
+                    break
+                Task.objects.get_or_create(
+                    title=row[0],
+                    description=row[1],
+                    due_date=datetime.strptime(row[2], '%d.%m.%Y'),
+                    status=row[3]
+                )
 
         return redirect('/')
 
