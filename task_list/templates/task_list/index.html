@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+{% extends 'task_list/base.html' %}
+{% block title %}
+  <title>ToDo</title>
+{% endblock %}
+	{% block container %}
+    <div class="row mt-5" data-test="cards">
+        {% for task in tasks %}
+        <div class="col-4" data-test="card">
+            <div class="card mb-3" >
+            <div class="card-body bg-white">
+              <h5 class="card-title text-warning">{{ task.title }}</h5>
+             <p class="card-text" style="">{{ task.description }}</p>
+                {% if task.tags.all %}
+                {% for tag in task.tags.all %}
+                <a href="/tag_filter/{{ tag.name }}" class="badge badge-info">#{{ tag.name }}</a>
+                {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                {% if task.status == "in progress" %}
+                <a href="/current" class="card-text badge badge-danger" style="">{{ task.status }}</a>
+                {% else %}
+                <a href="/completed" class="card-text badge badge-success" style="">{{ task.status }}</a>
+                {% endif %}
+                </div>
+                <table width="100%">
+                    {% if task.due_date %}
+                    <tr style="font-weight:bold">
+						<td>{{ task.due_date }}</td>
+					</tr>
+                    {% endif %}
+                </table>
+
+				<a href="/task/{{ task.id }}" class="btn btn-outline-dark btn-sm mt-2" data-test="tourlink">Подробнее</a>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if main %}
+        <div class="form-group mt-5">
+            <table width="100%">
+                <tr style="font-weight:bold">
+                    <td>
+                        <a href="/export_csv/" class="btn btn-outline-info btn-sm" name="exportcsv" >
+							Export to csv
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            <label>Import tasks:</label>
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="custom-file col-3">
+                    <input type="file" class="custom-file-input" id="id_csv_file" name="csv_file">
+                    <label class="custom-file-label" for="id_csv_file">Choose .csv file</label>
+                </div>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="submit" name="import">Upload</button>
+                </div>
+            </div>
+        </form>
+
+    {% endif %}
+{% endblock %}
